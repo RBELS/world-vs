@@ -14,14 +14,13 @@
 extern glm::vec3 tiePos;
 extern glm::vec3 tieDir;
 extern glm::vec3 tieUp;
-extern glm::vec3 rotateAngles;
 extern keys activeKeys;
 
-extern gamepad_state gamepad;
-extern glm::vec3 rotX, rotY, rotZ;
+extern glm::vec3 cameraPos;
+extern glm::vec3 cameraPoint;
+extern glm::vec3 cameraUp;
 
-extern glm::vec3 rotAxis;
-extern double rotAngle;
+extern gamepad_state gamepad;
 
 void moveTie();
 void ReadGamepadInput();

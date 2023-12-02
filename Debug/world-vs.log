@@ -1,19 +1,19 @@
 ﻿  control.cpp
-C:\Users\Artyom\Desktop\world-vs\control.cpp(28,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Artyom\Desktop\world-vs\control.cpp(32,46): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+C:\Users\Artyom\Desktop\world-vs\control.cpp(22,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Artyom\Desktop\world-vs\control.cpp(26,59): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\Artyom\Desktop\world-vs\control.cpp(33,39): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+C:\Users\Artyom\Desktop\world-vs\control.cpp(27,39): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\Artyom\Desktop\world-vs\control.cpp(34,46): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+C:\Users\Artyom\Desktop\world-vs\control.cpp(28,59): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\Artyom\Desktop\world-vs\control.cpp(48,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Artyom\Desktop\world-vs\control.cpp(42,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   world-vs.vcxproj -> C:\Users\Artyom\Desktop\world-vs\Debug\world-vs.exe

@@ -6,6 +6,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "headers/tie.h"
 #include "headers/tie_n.h"
+#include "headers/destroyer.h"
+#include "headers/destroyer_n.h"
 #include "gametime.h"
 #include "data.h"
 #include "control.h"
@@ -61,6 +63,9 @@ HANDLE hControlThread;
 
 FILE* g_ic_file_cout_stream; FILE* g_ic_file_cin_stream;
 
+glm::vec4 light0Pos(600.0, 50.0, 200.0, 1.0);
+glm::vec4 light0Diffuse(1.0, 1.0, 1.0, 1.0);
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     int choosePixelFormatResult;
@@ -94,6 +99,15 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         srand(time(NULL));
         gametime::InitTicks();
         screen::InitStars();
+
+        // Установка света
+        glEnable(GL_NORMALIZE);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, glm::value_ptr(light0Diffuse));
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, glm::value_ptr(light0Pos));
+
 
         AllocConsole();
         freopen_s(&g_ic_file_cout_stream, "CONOUT$", "w", stdout);
@@ -134,26 +148,15 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     }
 }
 
-glm::vec4 light0Pos(600.0, 50.0, 200.0, 1.0);
-glm::vec4 light0Diffuse(1.0, 1.0, 1.0, 1.0);
 
-void Draw() {
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(90.0, screen::aspect, 0.01, 150.0);
-
-    screen::DrawStars();
-
-    // draw tie
+void DrawTie()
+{
     glMatrixMode(GL_MODELVIEW);
 
     glm::mat4 viewMatrix = glm::lookAt(
-        glm::vec3(0.0, 0.0, -4.0),
-        glm::vec3(0.0, 0.0, 0.0),
-        glm::vec3(0.0, 1.0, 0.0)
+        cameraPos,
+        cameraPoint,
+        cameraUp
     );
 
     glm::mat4 modelMatrix = glm::mat4(1.0f);
@@ -163,21 +166,9 @@ void Draw() {
     glm::mat4 mvMatrix = viewMatrix * modelMatrix;
     glLoadMatrixf(glm::value_ptr(mvMatrix));
 
-    /*glm::mat4 viewMatrix = glm::lookAt(
-        glm::vec3(0.0, 0.0, -4.0),
-        glm::vec3(0.0, 0.0, 0.0),
-        glm::vec3(0.0, 1.0, 0.0)
-    );
-    glm::mat4 modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::translate(modelMatrix, tiePos);
-    modelMatrix = modelMatrix * glm::lookAt(glm::vec3(0.0f), -tieDir, -tieUp);
-
-    glm::mat4 mvMatrix = viewMatrix * modelMatrix;
-    glLoadMatrixf(glm::value_ptr(mvMatrix));*/
-
     glEnable(GL_NORMALIZE);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
+    /*glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);*/
 
     glLightfv(GL_LIGHT0, GL_DIFFUSE, (float*)&light0Diffuse);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, (float*)&light0Pos);
@@ -193,7 +184,62 @@ void Draw() {
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
-    glDisable(GL_LIGHTING);
+}
+
+void DrawDestroyer()
+{
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    // Установка матрицы вида
+    glm::mat4 viewMatrix = glm::lookAt(
+        cameraPos,
+        cameraPoint,
+        cameraUp
+    );
+
+    // Установка матрицы модели
+    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    glm::vec3 destroyerPos = glm::vec3(1.0, -1.0, 20.0);
+    //const float scale = 10.0;
+
+    modelMatrix = glm::translate(modelMatrix, destroyerPos);
+    modelMatrix = glm::inverse(glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 1.0, 0.0)) * modelMatrix);
+    //modelMatrix = glm::scale(modelMatrix, glm::vec3(scale, scale, scale));
+
+    // Сначала умножаем матрицу вида, затем матрицу модели
+    glm::mat4 mvMatrix = viewMatrix * modelMatrix;
+
+    glLoadMatrixf(glm::value_ptr(mvMatrix));
+
+    // Рендеринг объекта
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+
+    glColor3f(1.0, 1.0, 1.0);
+    glVertexPointer(3, GL_FLOAT, 3 * 4, __destroyer_v);
+    glNormalPointer(GL_FLOAT, 3 * 4, __destroyer_n);
+
+    glDrawArrays(GL_TRIANGLES, 0, __destroyer_v_len / 4 / 3);
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+}
+
+void Draw()
+{
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(90.0, screen::aspect, 0.01, 100.0);
+
+    screen::DrawStars();
+
+    //DrawDestroyer();
+
+    DrawTie();
 
     SwapBuffers(hdc);
 }

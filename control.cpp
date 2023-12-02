@@ -4,18 +4,12 @@
 glm::vec3 tiePos(0.0, 0.0, 0.0);
 glm::vec3 tieDir(0.0, 0.0, 0.0);
 glm::vec3 tieUp(0.0, 0.0, 0.0);
-glm::vec3 rotateAngles(0.0, 0.0, 0.0);
-glm::highp_ivec2 prevMousePos(0, 0);
+
+glm::vec3 cameraPos(0.0, 0.0, 0.0);
+glm::vec3 cameraPoint(0.0, 0.0, -4.0);
+glm::vec3 cameraUp(0.0, 0.0, 0.0);
 
 glm::vec3 rotX(1.0, 0.0, 0.0), rotY(0.0, 1.0, 0.0), rotZ(0.0, 0.0, 1.0);
-
-glm::vec3 rotAxis;
-double rotAngle;
-
-// private
-bool firstMouseMove = true;
-
-//camera
 
 keys activeKeys = { false, false, false, false };
 gamepad_state gamepadControl = {};
@@ -24,14 +18,14 @@ const double M_PI = 3.14159265358979323846;
 
 void moveTie()
 {
-    //rotate angles
+    // rotate angles
     float sidesCoeff = gamepadControl.lb - gamepadControl.rb;
 
     glm::vec3 rotateOffset(0.0, 0.0, 0.0);
-    static float rotateSens = 1.0;
-    rotateOffset.x = -gamepadControl.lStickY * rotateSens;
+    static float rotateSens = 10.0;
+    rotateOffset.x = -gamepadControl.lStickY * rotateSens * gametime::deltaTicksF;
     rotateOffset.y = 5.0 * sidesCoeff * gametime::deltaTicksF;
-    rotateOffset.z = -gamepadControl.lStickX * rotateSens;
+    rotateOffset.z = -gamepadControl.lStickX * rotateSens * gametime::deltaTicksF;
 
     glm::quat qx = glm::angleAxis(glm::radians(rotateOffset.x), rotX);
     glm::quat qy = glm::angleAxis(glm::radians(rotateOffset.y), rotY);
@@ -48,6 +42,11 @@ void moveTie()
     float straightCoeff = gamepadControl.rtPow - gamepadControl.ltPow;;
     copy *= 3.0 * straightCoeff * gametime::deltaTicksF;
     tiePos += copy;
+
+    // camera
+    cameraPos = 5.0f * tieDir - tiePos;
+    cameraPoint = -tiePos;
+    cameraUp = tieUp;
 }
 
 DWORD WINAPI controlThreadProc(LPVOID lpParam)

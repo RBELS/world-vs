@@ -36,13 +36,26 @@ void screen::InitStars()
 
 void screen::DrawStars()
 {
+    glDisable(GL_LIGHTING);
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(
-        0.0, 0.0, -4.0,
-        0.0, 0.0, 0.0,
-        0.0, 1.0, 0.0
+
+    /*glm::mat4 viewMatrix = glm::lookAt(
+        cameraPos,
+        cameraPoint,
+        cameraUp
+    );*/
+    glm::mat4 viewMatrix = glm::lookAt(
+        cameraPos,
+        cameraPoint,
+        cameraUp
     );
+
+    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0, 0.0, 0.0));
+    modelMatrix = glm::inverse(glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, 1.0, 0.0)) * modelMatrix);
+
+    glm::mat4 mvMatrix = viewMatrix * modelMatrix;
+    glLoadMatrixf(glm::value_ptr(mvMatrix));
 
     glPointSize(1.0);
     glEnable(GL_POINT_SMOOTH);
@@ -63,4 +76,5 @@ void screen::DrawStars()
     glDrawArrays(GL_POINTS, STARS_COUNT * 3 / 4, STARS_COUNT / 4);
 
     glDisableClientState(GL_VERTEX_ARRAY);
+    glEnable(GL_LIGHTING);
 }
