@@ -13,16 +13,16 @@
 
 extern glm::vec3 tiePos;
 extern glm::vec3 tieDir;
+extern glm::vec3 tieUp;
 extern glm::vec3 rotateAngles;
 extern keys activeKeys;
 
 extern gamepad_state gamepad;
-extern glm::vec4 rotX, rotY, rotZ;
+extern glm::vec3 rotX, rotY, rotZ;
 
 extern glm::vec3 rotAxis;
 extern double rotAngle;
 
 void moveTie();
-void ProcessMouseMove(DWORD posDword);
 void ReadGamepadInput();
 DWORD WINAPI controlThreadProc(LPVOID lpParam);

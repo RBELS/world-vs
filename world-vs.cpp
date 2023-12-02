@@ -2,6 +2,8 @@
 #include <iostream>
 #include <gl/GL.h>
 #include <gl/GLU.h>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "headers/tie.h"
 #include "headers/tie_n.h"
 #include "gametime.h"
@@ -112,7 +114,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         Draw();
         break;
     case WM_MOUSEMOVE:
-        ProcessMouseMove(lParam);
         break;
     case WM_KEYUP:
         ProcessKeyUp(wParam);
@@ -148,14 +149,31 @@ void Draw() {
 
     // draw tie
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(
-        0.0, 0.0, -4.0,
-        0.0, 0.0, 0.0,
-        0.0, 1.0, 0.0
+
+    glm::mat4 viewMatrix = glm::lookAt(
+        glm::vec3(0.0, 0.0, -4.0),
+        glm::vec3(0.0, 0.0, 0.0),
+        glm::vec3(0.0, 1.0, 0.0)
     );
-    glTranslatef(tiePos.x, tiePos.y, tiePos.z);
-    glRotatef(rotAngle, rotAxis.x, rotAxis.y, rotAxis.z);
+
+    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::translate(modelMatrix, tiePos);
+    modelMatrix = glm::inverse(glm::lookAt(glm::vec3(0.0f), tieDir, tieUp) * modelMatrix);
+
+    glm::mat4 mvMatrix = viewMatrix * modelMatrix;
+    glLoadMatrixf(glm::value_ptr(mvMatrix));
+
+    /*glm::mat4 viewMatrix = glm::lookAt(
+        glm::vec3(0.0, 0.0, -4.0),
+        glm::vec3(0.0, 0.0, 0.0),
+        glm::vec3(0.0, 1.0, 0.0)
+    );
+    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::translate(modelMatrix, tiePos);
+    modelMatrix = modelMatrix * glm::lookAt(glm::vec3(0.0f), -tieDir, -tieUp);
+
+    glm::mat4 mvMatrix = viewMatrix * modelMatrix;
+    glLoadMatrixf(glm::value_ptr(mvMatrix));*/
 
     glEnable(GL_NORMALIZE);
     glEnable(GL_LIGHTING);
