@@ -1,0 +1,5 @@
+﻿  world-vs.cpp
+C:\Users\Artyom\Desktop\world-vs\world-vs.cpp(92,19): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Artyom\Desktop\world-vs\world-vs.cpp(158,15): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\Artyom\Desktop\world-vs\world-vs.cpp(134): warning C4715: 'WindowProc': not all control paths return a value
+  world-vs.vcxproj -> C:\Users\Artyom\Desktop\world-vs\Debug\world-vs.exe
