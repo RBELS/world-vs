@@ -105,8 +105,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         glEnable(GL_LIGHTING);
         glEnable(GL_LIGHT0);
 
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, glm::value_ptr(light0Diffuse));
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, glm::value_ptr(light0Pos));
+        /*glLightfv(GL_LIGHT0, GL_DIFFUSE, glm::value_ptr(light0Diffuse));
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, glm::value_ptr(light0Pos));*/
 
 
         AllocConsole();
@@ -166,13 +166,6 @@ void DrawTie()
     glm::mat4 mvMatrix = viewMatrix * modelMatrix;
     glLoadMatrixf(glm::value_ptr(mvMatrix));
 
-    glEnable(GL_NORMALIZE);
-    /*glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);*/
-
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, (float*)&light0Diffuse);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, (float*)&light0Pos);
-
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
 
@@ -200,17 +193,20 @@ void DrawDestroyer()
 
     // Установка матрицы модели
     glm::mat4 modelMatrix = glm::mat4(1.0f);
-    glm::vec3 destroyerPos = glm::vec3(1.0, -1.0, 20.0);
-    //const float scale = 10.0;
+    glm::vec3 destroyerPos = glm::vec3(1.0, -1.0, 200.0);
+    const float scale = 10.0;
 
     modelMatrix = glm::translate(modelMatrix, destroyerPos);
     modelMatrix = glm::inverse(glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 1.0, 0.0)) * modelMatrix);
-    //modelMatrix = glm::scale(modelMatrix, glm::vec3(scale, scale, scale));
+    modelMatrix = glm::scale(modelMatrix, glm::vec3(scale, scale, scale));
 
     // Сначала умножаем матрицу вида, затем матрицу модели
     glm::mat4 mvMatrix = viewMatrix * modelMatrix;
 
     glLoadMatrixf(glm::value_ptr(mvMatrix));
+
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, glm::value_ptr(light0Diffuse));
+    glLightfv(GL_LIGHT0, GL_POSITION, glm::value_ptr(light0Pos));
 
     // Рендеринг объекта
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -233,11 +229,11 @@ void Draw()
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(90.0, screen::aspect, 0.01, 100.0);
+    gluPerspective(90.0, screen::aspect, 0.01, 3200.0);
 
     screen::DrawStars();
 
-    //DrawDestroyer();
+    DrawDestroyer();
 
     DrawTie();
 

@@ -30,7 +30,7 @@ void screen::InitStars()
         buf.y = randomFloat();
         buf.z = randomFloat();
         stars[i] = glm::normalize(buf);
-        stars[i] *= 100.0;
+        stars[i] *= 1500.0;
     }
 }
 
@@ -39,11 +39,6 @@ void screen::DrawStars()
     glDisable(GL_LIGHTING);
     glMatrixMode(GL_MODELVIEW);
 
-    /*glm::mat4 viewMatrix = glm::lookAt(
-        cameraPos,
-        cameraPoint,
-        cameraUp
-    );*/
     glm::mat4 viewMatrix = glm::lookAt(
         cameraPos,
         cameraPoint,
