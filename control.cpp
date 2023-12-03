@@ -114,7 +114,7 @@ void moveTie()
     qz = glm::angleAxis(glm::radians(rotateAnglesR.z), rotZ);
     resultQuat = qz * qy * qx;
 
-    cameraPos = 5.0f * glm::normalize(resultQuat*tieDir) - tiePos;
+    cameraPos = (5.0f + 2.0f * speed / maxSpeed) * glm::normalize(resultQuat * tieDir) - tiePos;
     cameraPoint = -tiePos;
     cameraUp = tieUp;
 }

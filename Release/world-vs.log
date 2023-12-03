@@ -60,8 +60,9 @@ C:\Users\Artyom\Desktop\world-vs\control.cpp(100,61): warning C4244: '=': conver
               T=float
           ]
   Generating code
-  Previous IPDB and IOBJ mismatch, fall back to full compilation.
 C:\Users\Artyom\Desktop\world-vs\world-vs.cpp(155): warning C4715: 'WindowProc': not all control paths return a value
-  All 98 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  3 of 98 functions ( 3.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    2 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   world-vs.vcxproj -> C:\Users\Artyom\Desktop\world-vs\Release\world-vs.exe
