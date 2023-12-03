@@ -23,20 +23,59 @@ const float defaultMinusAcc = -0.06;
 const float maxSpeed = 8.0;
 float speed = 0.0;
 
+glm::vec3 rotateOffsetR(0.0, 0.0, 0.0);
+glm::vec3 rotateOffsetL(0.0, 0.0, 0.0);
+glm::vec3 maxRotateOffsetL(0.7, 0.35, 0.7);
+glm::vec3 defaultStopAcc(0.02, 0.01, 0.02);
+
 void moveTie()
 {
     // rotate angles
     float sidesCoeff = gamepadControl.lb - gamepadControl.rb;
 
-    glm::vec3 rotateOffset(0.0, 0.0, 0.0);
-    static float rotateSens = 10.0;
-    rotateOffset.x = -gamepadControl.lStickY * rotateSens * gametime::deltaTicksF;
-    rotateOffset.y = 5.0 * sidesCoeff * gametime::deltaTicksF;
-    rotateOffset.z = -gamepadControl.lStickX * rotateSens * gametime::deltaTicksF;
+    static float rotateSens = 0.1;
+    rotateOffsetL.x += gametime::deltaTicksF * ( - gamepadControl.lStickY * rotateSens);
+    rotateOffsetL.y += gametime::deltaTicksF * (sidesCoeff * rotateSens * 0.5);
+    rotateOffsetL.z += gametime::deltaTicksF * ( - gamepadControl.lStickX * rotateSens);
 
-    glm::quat qx = glm::angleAxis(glm::radians(rotateOffset.x), rotX);
-    glm::quat qy = glm::angleAxis(glm::radians(rotateOffset.y), rotY);
-    glm::quat qz = glm::angleAxis(glm::radians(rotateOffset.z), rotZ);
+    if (rotateOffsetL.x > 0)
+    {
+        rotateOffsetL.x = max(0.0, rotateOffsetL.x - gametime::deltaTicksF * defaultStopAcc.x);
+    }
+    else if (rotateOffsetL.x < 0)
+    {
+        rotateOffsetL.x = min(0.0, rotateOffsetL.x + gametime::deltaTicksF * defaultStopAcc.x);
+    }
+
+    if (rotateOffsetL.y > 0)
+    {
+        rotateOffsetL.y = max(0.0, rotateOffsetL.y - gametime::deltaTicksF * defaultStopAcc.y);
+    }
+    else if (rotateOffsetL.y < 0)
+    {
+        rotateOffsetL.y = min(0.0, rotateOffsetL.y + gametime::deltaTicksF * defaultStopAcc.y);
+    }
+
+    if (rotateOffsetL.z > 0)
+    {
+        rotateOffsetL.z = max(0.0, rotateOffsetL.z - gametime::deltaTicksF * defaultStopAcc.z);
+    }
+    else if (rotateOffsetL.z < 0)
+    {
+        rotateOffsetL.z = min(0.0, rotateOffsetL.z + gametime::deltaTicksF * defaultStopAcc.z);
+    }
+
+
+    rotateOffsetL.x = max(rotateOffsetL.x, -maxRotateOffsetL.x);
+    rotateOffsetL.x = min(rotateOffsetL.x, maxRotateOffsetL.x);
+    rotateOffsetL.y = max(rotateOffsetL.y, -maxRotateOffsetL.y);
+    rotateOffsetL.y = min(rotateOffsetL.y, maxRotateOffsetL.y);
+    rotateOffsetL.z = max(rotateOffsetL.z, -maxRotateOffsetL.z);
+    rotateOffsetL.z = min(rotateOffsetL.z, maxRotateOffsetL.z);
+
+    glm::quat qx = glm::angleAxis(glm::radians(rotateOffsetL.x), rotX);
+    glm::quat qy = glm::angleAxis(glm::radians(rotateOffsetL.y), rotY);
+    glm::quat qz = glm::angleAxis(glm::radians(rotateOffsetL.z), rotZ);
     glm::quat resultQuat = qz * qy * qx;
     
     rotX = glm::normalize(resultQuat * rotX);
@@ -57,10 +96,10 @@ void moveTie()
 
     // camera
     static float rotateSensR = 10.0;
-    rotateOffset.x = -gamepadControl.rStickY * rotateSensR * gametime::deltaTicksF;
-    rotateOffset.y = -gamepadControl.rStickX * rotateSensR * gametime::deltaTicksF;
-    rotateOffset.z = 0.0;
-    rotateAnglesR += rotateOffset;
+    rotateOffsetR.x = -gamepadControl.rStickY * rotateSensR * gametime::deltaTicksF;
+    rotateOffsetR.y = -gamepadControl.rStickX * rotateSensR * gametime::deltaTicksF;
+    rotateOffsetR.z = 0.0;
+    rotateAnglesR += rotateOffsetR;
     if (rotateAnglesR.x >= 89.0f)
     {
         rotateAnglesR.x = 89.0f;
