@@ -291,7 +291,7 @@ void Draw()
     DrawDestroyer(&destroyer2Pos);
     DrawDestroyer(&destroyer3Pos);
 
-    //DrawPlanet();
+    DrawPlanet();
 
     DrawTie();
 

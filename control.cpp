@@ -16,6 +16,13 @@ gamepad_state gamepadControl = {};
 
 const double M_PI = 3.14159265358979323846;
 
+glm::vec3 rotateAnglesR(0.0, 0.0, 0.0);
+
+const float acc = 1.0;
+const float defaultMinusAcc = -0.06;
+const float maxSpeed = 8.0;
+float speed = 0.0;
+
 void moveTie()
 {
     // rotate angles
@@ -39,12 +46,36 @@ void moveTie()
     tieDir = rotZ;
     tieUp = rotY;
     glm::vec3 copy(rotZ);
-    float straightCoeff = gamepadControl.rtPow - gamepadControl.ltPow;;
-    copy *= 3.0 * straightCoeff * gametime::deltaTicksF;
+    float straightCoeff = gamepadControl.rtPow - gamepadControl.ltPow;
+    speed += gametime::deltaTicksF * (straightCoeff * acc + defaultMinusAcc);
+
+    speed = min(speed, maxSpeed);
+    speed = max(speed, 0.0);
+
+    copy *= speed * gametime::deltaTicksF;
     tiePos += copy;
 
     // camera
-    cameraPos = 5.0f * tieDir - tiePos;
+    static float rotateSensR = 10.0;
+    rotateOffset.x = -gamepadControl.rStickY * rotateSensR * gametime::deltaTicksF;
+    rotateOffset.y = -gamepadControl.rStickX * rotateSensR * gametime::deltaTicksF;
+    rotateOffset.z = 0.0;
+    rotateAnglesR += rotateOffset;
+    if (rotateAnglesR.x >= 89.0f)
+    {
+        rotateAnglesR.x = 89.0f;
+    }
+    else if (rotateAnglesR.x <= -89.0f)
+    {
+        rotateAnglesR.x = -89.0f;
+    }
+
+    qx = glm::angleAxis(glm::radians(rotateAnglesR.x), rotX);
+    qy = glm::angleAxis(glm::radians(rotateAnglesR.y), rotY);
+    qz = glm::angleAxis(glm::radians(rotateAnglesR.z), rotZ);
+    resultQuat = qz * qy * qx;
+
+    cameraPos = 5.0f * glm::normalize(resultQuat*tieDir) - tiePos;
     cameraPoint = -tiePos;
     cameraUp = tieUp;
 }
