@@ -4,8 +4,8 @@
 
 namespace gametime
 {
-    extern int startTicks, prevTicks, ticks, deltaTicks;
-    extern float startTicksF, prevTicksF, ticksF, deltaTicksF;
+    extern UINT64 startTicks, prevTicks, ticks, deltaTicks;
+    extern double startTicksF, prevTicksF, ticksF, deltaTicksF;
 
     void InitTicks();
     void UpdateTicks();

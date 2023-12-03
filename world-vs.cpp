@@ -20,7 +20,6 @@
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 void Draw();
-void ProcessEvents();
 void ProcessKeyDown(WPARAM wParam);
 void ProcessKeyUp(WPARAM wParam);
 
@@ -130,7 +129,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         break;
     case WM_PAINT:
         gametime::UpdateTicks();
-        ProcessEvents();
+        moveTie();
         Draw();
         break;
     case WM_MOUSEMOVE:
@@ -159,18 +158,18 @@ void DrawTie()
 {
     glMatrixMode(GL_MODELVIEW);
 
-    glm::mat4 viewMatrix = glm::lookAt(
+    glm::dmat4 viewMatrix = glm::lookAt(
         cameraPos,
         cameraPoint,
         cameraUp
     );
 
-    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    glm::dmat4 modelMatrix = glm::dmat4(1.0);
     modelMatrix = glm::translate(modelMatrix, tiePos);
-    modelMatrix = glm::inverse(glm::lookAt(glm::vec3(0.0f), tieDir, tieUp) * modelMatrix);
+    modelMatrix = glm::inverse(glm::lookAt(glm::dvec3(0.0), tieDir, tieUp) * modelMatrix);
 
-    glm::mat4 mvMatrix = viewMatrix * modelMatrix;
-    glLoadMatrixf(glm::value_ptr(mvMatrix));
+    glm::dmat4 mvMatrix = viewMatrix * modelMatrix;
+    glLoadMatrixd(glm::value_ptr(mvMatrix));
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
@@ -191,26 +190,26 @@ void DrawPlanet()
     glLoadIdentity();
 
     // Установка матрицы вида
-    glm::mat4 viewMatrix = glm::lookAt(
+    glm::dmat4 viewMatrix = glm::lookAt(
         cameraPos,
         cameraPoint,
         cameraUp
     );
 
     // Установка матрицы модели
-    glm::mat4 modelMatrix = glm::mat4(1.0f);
-    glm::vec3 planetPos = glm::vec3(1.0, -1.0, 2000.0);
+    glm::dmat4 modelMatrix = glm::dmat4(1.0);
+    glm::dvec3 planetPos = glm::dvec3(1.0, -1.0, 2000.0);
     const float scale = 1000.0;
 
     modelMatrix = glm::translate(modelMatrix, planetPos);
-    modelMatrix = glm::inverse(glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 1.0, 0.0)) * modelMatrix);
-    modelMatrix = glm::scale(modelMatrix, glm::vec3(scale, scale, scale));
-    modelMatrix = glm::rotate(modelMatrix, gametime::ticksF/200.0f, glm::vec3(0.0, 1.0, 0.0));
+    modelMatrix = glm::inverse(glm::lookAt(glm::dvec3(0.0f), glm::dvec3(0.0, 0.0, -1.0), glm::dvec3(0.0, 1.0, 0.0)) * modelMatrix);
+    modelMatrix = glm::scale(modelMatrix, glm::dvec3(scale, scale, scale));
+    modelMatrix = glm::rotate(modelMatrix, gametime::ticksF/200.0, glm::dvec3(0.0, 1.0, 0.0));
 
     // Сначала умножаем матрицу вида, затем матрицу модели
-    glm::mat4 mvMatrix = viewMatrix * modelMatrix;
+    glm::dmat4 mvMatrix = viewMatrix * modelMatrix;
 
-    glLoadMatrixf(glm::value_ptr(mvMatrix));
+    glLoadMatrixd(glm::value_ptr(mvMatrix));
 
     glLightfv(GL_LIGHT0, GL_DIFFUSE, glm::value_ptr(light0Diffuse));
     glLightfv(GL_LIGHT0, GL_POSITION, glm::value_ptr(light0Pos));
@@ -232,31 +231,31 @@ void DrawPlanet()
     glDisableClientState(GL_NORMAL_ARRAY);
 }
 
-void DrawDestroyer(glm::vec3 *destroyerPos)
+void DrawDestroyer(glm::dvec3 *destroyerPos)
 {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     // Установка матрицы вида
-    glm::mat4 viewMatrix = glm::lookAt(
+    glm::dmat4 viewMatrix = glm::lookAt(
         cameraPos,
         cameraPoint,
         cameraUp
     );
 
     // Установка матрицы модели
-    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    glm::dmat4 modelMatrix = glm::dmat4(1.0);
     //glm::vec3 destroyerPos = glm::vec3(100.0, -50.0, 200.0);
-    const float scale = 10.0;
+    const double scale = 10.0;
 
     modelMatrix = glm::translate(modelMatrix, *destroyerPos);
-    modelMatrix = glm::inverse(glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 1.0, 0.0)) * modelMatrix);
-    modelMatrix = glm::scale(modelMatrix, glm::vec3(scale, scale, scale));
+    modelMatrix = glm::inverse(glm::lookAt(glm::dvec3(0.0), glm::dvec3(0.0, 0.0, -1.0), glm::dvec3(0.0, 1.0, 0.0)) * modelMatrix);
+    modelMatrix = glm::scale(modelMatrix, glm::dvec3(scale, scale, scale));
 
     // Сначала умножаем матрицу вида, затем матрицу модели
-    glm::mat4 mvMatrix = viewMatrix * modelMatrix;
+    glm::dmat4 mvMatrix = viewMatrix * modelMatrix;
 
-    glLoadMatrixf(glm::value_ptr(mvMatrix));
+    glLoadMatrixd(glm::value_ptr(mvMatrix));
 
     // Рендеринг объекта
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -272,9 +271,9 @@ void DrawDestroyer(glm::vec3 *destroyerPos)
     glDisableClientState(GL_NORMAL_ARRAY);
 }
 
-glm::vec3 destroyer1Pos = glm::vec3(100.0, -50.0, 200.0);
-glm::vec3 destroyer2Pos = glm::vec3(-160.0, 50.0, 280.0);
-glm::vec3 destroyer3Pos = glm::vec3(0.0, 100.0, 150.0);
+glm::dvec3 destroyer1Pos = glm::dvec3(100.0, -50.0, 200.0);
+glm::dvec3 destroyer2Pos = glm::dvec3(-160.0, 50.0, 280.0);
+glm::dvec3 destroyer3Pos = glm::dvec3(0.0, 100.0, 150.0);
 
 void Draw()
 {
@@ -296,13 +295,6 @@ void Draw()
     DrawTie();
 
     SwapBuffers(hdc);
-}
-
-const glm::vec3 OZ(0.0, 0.0, 1.0);
-
-void ProcessEvents()
-{
-    moveTie();
 }
 
 

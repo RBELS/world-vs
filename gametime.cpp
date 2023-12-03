@@ -1,11 +1,14 @@
 #include "gametime.h"
 
-int gametime::startTicks, gametime::prevTicks, gametime::ticks, gametime::deltaTicks;
-float gametime::startTicksF, gametime::prevTicksF, gametime::ticksF, gametime::deltaTicksF;
+UINT64 gametime::startTicks, gametime::prevTicks, gametime::ticks, gametime::deltaTicks;
+double gametime::startTicksF, gametime::prevTicksF, gametime::ticksF, gametime::deltaTicksF;
 
 void gametime::InitTicks()
 {
-    int temp = GetTickCount();
+    LARGE_INTEGER perfCounter;
+    QueryPerformanceCounter(&perfCounter);
+
+    UINT64 temp = perfCounter.QuadPart;
     startTicks = temp;
     startTicksF = temp / 100.0;
 
@@ -21,9 +24,12 @@ void gametime::InitTicks()
 
 void gametime::UpdateTicks()
 {
-    int temp = GetTickCount();
+    LARGE_INTEGER perfCounter;
+    QueryPerformanceCounter(&perfCounter);
+
+    UINT64 temp = perfCounter.QuadPart;
     ticks = temp - startTicks;
-    ticksF = ticks / 100.0;
+    ticksF = ticks / 1000000.0;
 
     deltaTicks = ticks - prevTicks;
 

@@ -11,14 +11,14 @@
 #include <XInput.h>
 #include <math.h>
 
-extern glm::vec3 tiePos;
-extern glm::vec3 tieDir;
-extern glm::vec3 tieUp;
+extern glm::dvec3 tiePos;
+extern glm::dvec3 tieDir;
+extern glm::dvec3 tieUp;
 extern keys activeKeys;
 
-extern glm::vec3 cameraPos;
-extern glm::vec3 cameraPoint;
-extern glm::vec3 cameraUp;
+extern glm::dvec3 cameraPos;
+extern glm::dvec3 cameraPoint;
+extern glm::dvec3 cameraUp;
 
 extern gamepad_state gamepad;
 

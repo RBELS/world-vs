@@ -1,32 +1,32 @@
 #include "control.h"
 #include "gametime.h"
 
-glm::vec3 tiePos(0.0, 0.0, 0.0);
-glm::vec3 tieDir(0.0, 0.0, 0.0);
-glm::vec3 tieUp(0.0, 0.0, 0.0);
+glm::dvec3 tiePos(0.0, 0.0, 0.0);
+glm::dvec3 tieDir(0.0, 0.0, 0.0);
+glm::dvec3 tieUp(0.0, 0.0, 0.0);
 
-glm::vec3 cameraPos(0.0, 0.0, 0.0);
-glm::vec3 cameraPoint(0.0, 0.0, -4.0);
-glm::vec3 cameraUp(0.0, 0.0, 0.0);
+glm::dvec3 cameraPos(0.0, 0.0, 0.0);
+glm::dvec3 cameraPoint(0.0, 0.0, -4.0);
+glm::dvec3 cameraUp(0.0, 0.0, 0.0);
 
-glm::vec3 rotX(1.0, 0.0, 0.0), rotY(0.0, 1.0, 0.0), rotZ(0.0, 0.0, 1.0);
+glm::dvec3 rotX(1.0, 0.0, 0.0), rotY(0.0, 1.0, 0.0), rotZ(0.0, 0.0, 1.0);
 
 keys activeKeys = { false, false, false, false };
 gamepad_state gamepadControl = {};
 
 const double M_PI = 3.14159265358979323846;
 
-glm::vec3 rotateAnglesR(0.0, 0.0, 0.0);
+glm::dvec3 rotateAnglesR(0.0, 0.0, 0.0);
 
-const float acc = 1.0;
-const float defaultMinusAcc = -0.06;
-const float maxSpeed = 8.0;
+const double acc = 1.0;
+const double defaultMinusAcc = -0.06;
+const double maxSpeed = 8.0;
 float speed = 0.0;
 
-glm::vec3 rotateOffsetR(0.0, 0.0, 0.0);
-glm::vec3 rotateOffsetL(0.0, 0.0, 0.0);
-glm::vec3 maxRotateOffsetL(0.7, 0.35, 0.7);
-glm::vec3 defaultStopAcc(0.02, 0.01, 0.02);
+glm::dvec3 rotateOffsetR(0.0, 0.0, 0.0);
+glm::dvec3 rotateOffsetL(0.0, 0.0, 0.0);
+glm::dvec3 maxRotateOffsetL(0.7, 0.35, 0.7);
+glm::dvec3 defaultStopAcc(0.02, 0.01, 0.02);
 
 void moveTie()
 {
@@ -73,10 +73,10 @@ void moveTie()
     rotateOffsetL.z = max(rotateOffsetL.z, -maxRotateOffsetL.z);
     rotateOffsetL.z = min(rotateOffsetL.z, maxRotateOffsetL.z);
 
-    glm::quat qx = glm::angleAxis(glm::radians(rotateOffsetL.x), rotX);
-    glm::quat qy = glm::angleAxis(glm::radians(rotateOffsetL.y), rotY);
-    glm::quat qz = glm::angleAxis(glm::radians(rotateOffsetL.z), rotZ);
-    glm::quat resultQuat = qz * qy * qx;
+    glm::dquat qx = glm::angleAxis(glm::radians(rotateOffsetL.x), rotX);
+    glm::dquat qy = glm::angleAxis(glm::radians(rotateOffsetL.y), rotY);
+    glm::dquat qz = glm::angleAxis(glm::radians(rotateOffsetL.z), rotZ);
+    glm::dquat resultQuat = qz * qy * qx;
     
     rotX = glm::normalize(resultQuat * rotX);
     rotY = glm::normalize(resultQuat * rotY);
@@ -84,7 +84,7 @@ void moveTie()
 
     tieDir = rotZ;
     tieUp = rotY;
-    glm::vec3 copy(rotZ);
+    glm::dvec3 copy(rotZ);
     float straightCoeff = gamepadControl.rtPow - gamepadControl.ltPow;
     speed += gametime::deltaTicksF * (straightCoeff * acc + defaultMinusAcc);
 
@@ -100,13 +100,13 @@ void moveTie()
     rotateOffsetR.y = -gamepadControl.rStickX * rotateSensR * gametime::deltaTicksF;
     rotateOffsetR.z = 0.0;
     rotateAnglesR += rotateOffsetR;
-    if (rotateAnglesR.x >= 89.0f)
+    if (rotateAnglesR.x >= 89.0)
     {
-        rotateAnglesR.x = 89.0f;
+        rotateAnglesR.x = 89.0;
     }
-    else if (rotateAnglesR.x <= -89.0f)
+    else if (rotateAnglesR.x <= -89.0)
     {
-        rotateAnglesR.x = -89.0f;
+        rotateAnglesR.x = -89.0;
     }
 
     qx = glm::angleAxis(glm::radians(rotateAnglesR.x), rotX);
@@ -114,7 +114,7 @@ void moveTie()
     qz = glm::angleAxis(glm::radians(rotateAnglesR.z), rotZ);
     resultQuat = qz * qy * qx;
 
-    cameraPos = (5.0f + 2.0f * speed / maxSpeed) * glm::normalize(resultQuat * tieDir) - tiePos;
+    cameraPos = (5.0 + 2.0 * speed / maxSpeed) * glm::normalize(resultQuat * (glm::dvec3) tieDir) - (glm::dvec3) tiePos;
     cameraPoint = -tiePos;
     cameraUp = tieUp;
 }
