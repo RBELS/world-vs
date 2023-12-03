@@ -10,7 +10,7 @@ void gametime::InitTicks()
 
     UINT64 temp = perfCounter.QuadPart;
     startTicks = temp;
-    startTicksF = temp / 100.0;
+    startTicksF = temp / 1000000.0;
 
     prevTicks = 0;
     prevTicksF = 0.0;

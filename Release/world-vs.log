@@ -1,8 +1,7 @@
 ﻿  gametime.cpp
   Generating code
+  Previous IPDB and IOBJ mismatch, fall back to full compilation.
 C:\Users\Artyom\Desktop\world-vs\world-vs.cpp(154): warning C4715: 'WindowProc': not all control paths return a value
-  2 of 142 functions ( 1.4%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    3 functions had inline decision re-evaluated but remain unchanged
+  All 142 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   world-vs.vcxproj -> C:\Users\Artyom\Desktop\world-vs\Release\world-vs.exe
