@@ -8,6 +8,8 @@
 #include "headers/tie_n.h"
 #include "headers/destroyer.h"
 #include "headers/destroyer_n.h"
+#include "headers/planet_v.h"
+#include "headers/planet_n.h"
 #include "gametime.h"
 #include "data.h"
 #include "control.h"
@@ -66,6 +68,9 @@ FILE* g_ic_file_cout_stream; FILE* g_ic_file_cin_stream;
 glm::vec4 light0Pos(600.0, 50.0, 200.0, 1.0);
 glm::vec4 light0Diffuse(1.0, 1.0, 1.0, 1.0);
 
+glm::vec4 light1Pos(-600.0, -50.0, -200.0, 1.0);
+glm::vec4 light1Diffuse(1.0, 1.0, 1.0, 1.0);
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     int choosePixelFormatResult;
@@ -104,6 +109,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         glEnable(GL_NORMALIZE);
         glEnable(GL_LIGHTING);
         glEnable(GL_LIGHT0);
+        glEnable(GL_LIGHT1);
 
         /*glLightfv(GL_LIGHT0, GL_DIFFUSE, glm::value_ptr(light0Diffuse));
         glLightfv(GL_LIGHT0, GL_DIFFUSE, glm::value_ptr(light0Pos));*/
@@ -179,7 +185,7 @@ void DrawTie()
     glDisableClientState(GL_NORMAL_ARRAY);
 }
 
-void DrawDestroyer()
+void DrawPlanet()
 {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -193,12 +199,13 @@ void DrawDestroyer()
 
     // Установка матрицы модели
     glm::mat4 modelMatrix = glm::mat4(1.0f);
-    glm::vec3 destroyerPos = glm::vec3(1.0, -1.0, 200.0);
-    const float scale = 10.0;
+    glm::vec3 planetPos = glm::vec3(1.0, -1.0, 2000.0);
+    const float scale = 1000.0;
 
-    modelMatrix = glm::translate(modelMatrix, destroyerPos);
+    modelMatrix = glm::translate(modelMatrix, planetPos);
     modelMatrix = glm::inverse(glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 1.0, 0.0)) * modelMatrix);
     modelMatrix = glm::scale(modelMatrix, glm::vec3(scale, scale, scale));
+    modelMatrix = glm::rotate(modelMatrix, gametime::ticksF/200.0f, glm::vec3(0.0, 1.0, 0.0));
 
     // Сначала умножаем матрицу вида, затем матрицу модели
     glm::mat4 mvMatrix = viewMatrix * modelMatrix;
@@ -207,6 +214,49 @@ void DrawDestroyer()
 
     glLightfv(GL_LIGHT0, GL_DIFFUSE, glm::value_ptr(light0Diffuse));
     glLightfv(GL_LIGHT0, GL_POSITION, glm::value_ptr(light0Pos));
+
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, glm::value_ptr(light1Diffuse));
+    glLightfv(GL_LIGHT1, GL_POSITION, glm::value_ptr(light1Pos));
+
+    // Рендеринг объекта
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+
+    glColor3f(1.0, 1.0, 1.0);
+    glVertexPointer(3, GL_FLOAT, 3 * 4, planet_v);
+    glNormalPointer(GL_FLOAT, 3 * 4, planet_n);
+
+    glDrawArrays(GL_TRIANGLES, 0, planet_v_len / 4 / 3);
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+}
+
+void DrawDestroyer(glm::vec3 *destroyerPos)
+{
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    // Установка матрицы вида
+    glm::mat4 viewMatrix = glm::lookAt(
+        cameraPos,
+        cameraPoint,
+        cameraUp
+    );
+
+    // Установка матрицы модели
+    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    //glm::vec3 destroyerPos = glm::vec3(100.0, -50.0, 200.0);
+    const float scale = 10.0;
+
+    modelMatrix = glm::translate(modelMatrix, *destroyerPos);
+    modelMatrix = glm::inverse(glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 1.0, 0.0)) * modelMatrix);
+    modelMatrix = glm::scale(modelMatrix, glm::vec3(scale, scale, scale));
+
+    // Сначала умножаем матрицу вида, затем матрицу модели
+    glm::mat4 mvMatrix = viewMatrix * modelMatrix;
+
+    glLoadMatrixf(glm::value_ptr(mvMatrix));
 
     // Рендеринг объекта
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -222,6 +272,10 @@ void DrawDestroyer()
     glDisableClientState(GL_NORMAL_ARRAY);
 }
 
+glm::vec3 destroyer1Pos = glm::vec3(100.0, -50.0, 200.0);
+glm::vec3 destroyer2Pos = glm::vec3(-160.0, 50.0, 280.0);
+glm::vec3 destroyer3Pos = glm::vec3(0.0, 100.0, 150.0);
+
 void Draw()
 {
     glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -233,7 +287,11 @@ void Draw()
 
     screen::DrawStars();
 
-    DrawDestroyer();
+    DrawDestroyer(&destroyer1Pos);
+    DrawDestroyer(&destroyer2Pos);
+    DrawDestroyer(&destroyer3Pos);
+
+    //DrawPlanet();
 
     DrawTie();
 

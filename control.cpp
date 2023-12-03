@@ -54,7 +54,6 @@ DWORD WINAPI controlThreadProc(LPVOID lpParam)
     while (true)
     {
         ReadGamepadInput();
-        //Sleep(200);
     }
 }
 

@@ -1,19 +1,4 @@
-﻿  control.cpp
-C:\Users\Artyom\Desktop\world-vs\control.cpp(22,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Artyom\Desktop\world-vs\control.cpp(26,59): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\Artyom\Desktop\world-vs\control.cpp(27,39): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\Artyom\Desktop\world-vs\control.cpp(28,59): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\Artyom\Desktop\world-vs\control.cpp(42,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+﻿  world-vs.cpp
+C:\Users\Artyom\Desktop\world-vs\world-vs.cpp(104,19): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Artyom\Desktop\world-vs\world-vs.cpp(155): warning C4715: 'WindowProc': not all control paths return a value
   world-vs.vcxproj -> C:\Users\Artyom\Desktop\world-vs\Debug\world-vs.exe
