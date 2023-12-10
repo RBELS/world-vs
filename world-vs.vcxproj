@@ -139,19 +139,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="control.h" />
-    <ClInclude Include="data.h" />
+    <ClInclude Include="controller.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="models.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="screen.h" />
+    <ClInclude Include="view.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="gametime.h" />
     <ClInclude Include="world-vs.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="control.cpp" />
-    <ClCompile Include="data.cpp" />
-    <ClCompile Include="screen.cpp" />
+    <ClCompile Include="controller.cpp" />
+    <ClCompile Include="view.cpp" />
     <ClCompile Include="gametime.cpp" />
     <ClCompile Include="world-vs.cpp" />
   </ItemGroup>

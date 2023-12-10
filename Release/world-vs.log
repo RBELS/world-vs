@@ -1,7 +1,11 @@
-﻿  gametime.cpp
+﻿  view.cpp
+C:\Users\Artyom\Desktop\world-vs\view.cpp(27,15): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Artyom\Desktop\world-vs\view.cpp(76,28): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\Artyom\Desktop\world-vs\view.cpp(79,28): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\Artyom\Desktop\world-vs\view.cpp(82,28): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
   Generating code
-  Previous IPDB and IOBJ mismatch, fall back to full compilation.
-C:\Users\Artyom\Desktop\world-vs\world-vs.cpp(154): warning C4715: 'WindowProc': not all control paths return a value
-  All 142 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  0 of 99 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   world-vs.vcxproj -> C:\Users\Artyom\Desktop\world-vs\Release\world-vs.exe

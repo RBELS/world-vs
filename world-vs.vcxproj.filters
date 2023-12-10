@@ -27,16 +27,16 @@
     <ClInclude Include="world-vs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="data.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="screen.h">
+    <ClInclude Include="view.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gametime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="control.h">
+    <ClInclude Include="controller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="models.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,16 +44,13 @@
     <ClCompile Include="world-vs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="data.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="screen.cpp">
+    <ClCompile Include="view.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gametime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="control.cpp">
+    <ClCompile Include="controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
