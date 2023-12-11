@@ -1,11 +1,14 @@
-﻿  view.cpp
-C:\Users\Artyom\Desktop\world-vs\view.cpp(27,15): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Artyom\Desktop\world-vs\view.cpp(76,28): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\Artyom\Desktop\world-vs\view.cpp(79,28): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\Artyom\Desktop\world-vs\view.cpp(82,28): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+﻿  controller.cpp
+C:\Users\Artyom\Desktop\world-vs\controller.cpp(39,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Artyom\Desktop\world-vs\controller.cpp(41,34): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Artyom\Desktop\world-vs\controller.cpp(93,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Artyom\Desktop\world-vs\controller.cpp(94,36): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Artyom\Desktop\world-vs\controller.cpp(96,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Artyom\Desktop\world-vs\controller.cpp(97,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Generating code
-  5 of 98 functions ( 5.1%) were compiled, the rest were copied from previous compilation.
-    2 functions were new in current compilation
-    18 functions had inline decision re-evaluated but remain unchanged
+C:\Users\Artyom\Desktop\world-vs\world-vs.cpp(129): warning C4715: 'WindowProc': not all control paths return a value
+  3 of 98 functions ( 3.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    2 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   world-vs.vcxproj -> C:\Users\Artyom\Desktop\world-vs\x64\Release\world-vs.exe

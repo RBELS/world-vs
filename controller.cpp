@@ -96,7 +96,7 @@ void controller::Move()
     speed = min(speed, maxSpeed);
     speed = max(speed, 0.0);
 
-    copy *= speed * gametime::deltaTicksF;
+    copy *= speed * gametime::deltaTicksF * 0.01;
     tiePos += copy;
 
     // camera
@@ -119,7 +119,7 @@ void controller::Move()
     qz = glm::angleAxis(glm::radians(rotateAnglesR.z), rotZ);
     resultQuat = qz * qy * qx;
 
-    cameraPos = (5.0 + 2.0 * speed / maxSpeed) * glm::normalize(resultQuat * (glm::dvec3) tieDir) - (glm::dvec3) tiePos;
+    cameraPos = 0.01 * (5.0 + 2.0 * speed / maxSpeed) * glm::normalize(resultQuat * (glm::dvec3) tieDir) - (glm::dvec3) tiePos;
     cameraPoint = -tiePos;
     cameraUp = tieUp;
 }

@@ -37,7 +37,7 @@ void view::InitStars()
         buf.y = randomFloat();
         buf.z = randomFloat();
         stars[i] = glm::normalize(buf);
-        stars[i] *= 1500.0;
+        stars[i] *= 25.0;
     }
 }
 
@@ -93,6 +93,7 @@ void view::DrawTie()
     glm::dmat4 modelMatrix = glm::dmat4(1.0);
     modelMatrix = glm::translate(modelMatrix, controller::tiePos);
     modelMatrix = glm::inverse(glm::lookAt(glm::dvec3(0.0), controller::tieDir, controller::tieUp) * modelMatrix);
+    modelMatrix = glm::scale(modelMatrix, glm::dvec3(0.01, 0.01, 0.01));
 
     glm::dmat4 mvMatrix = viewMatrix * modelMatrix;
     glLoadMatrixd(glm::value_ptr(mvMatrix));
@@ -117,8 +118,8 @@ void view::DrawPlanet()
 
     // Установка матрицы модели
     glm::dmat4 modelMatrix = glm::dmat4(1.0);
-    glm::dvec3 planetPos = glm::dvec3(1.0, -1.0, 2000.0);
-    const float scale = 1000.0;
+    glm::dvec3 planetPos = glm::dvec3(1.0, -1.0, 20.0);
+    const float scale = 10.0;
 
     modelMatrix = glm::translate(modelMatrix, planetPos);
     modelMatrix = glm::inverse(glm::lookAt(glm::dvec3(0.0f), glm::dvec3(0.0, 0.0, -1.0), glm::dvec3(0.0, 1.0, 0.0)) * modelMatrix);
@@ -158,7 +159,7 @@ void view::DrawDestroyer(glm::dvec3* destroyerPos)
     // Установка матрицы модели
     glm::dmat4 modelMatrix = glm::dmat4(1.0);
     //glm::vec3 destroyerPos = glm::vec3(100.0, -50.0, 200.0);
-    const double scale = 10.0;
+    const double scale = 0.1;
 
     modelMatrix = glm::translate(modelMatrix, *destroyerPos);
     modelMatrix = glm::inverse(glm::lookAt(glm::dvec3(0.0), glm::dvec3(0.0, 0.0, -1.0), glm::dvec3(0.0, 1.0, 0.0)) * modelMatrix);

@@ -91,9 +91,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         glEnable(GL_LIGHT0);
         glEnable(GL_LIGHT1);
 
-        glMatrixMode(GL_PROJECTION);
+        /*glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        gluPerspective(90.0, view::aspect, 0.01, 3200.0);
+        gluPerspective(90.0, view::aspect, 0.01, 100.0);*/
 
         hControlThread = CreateThread(NULL, NULL, controller::controlThreadProc, NULL, 0, NULL);
 
@@ -102,7 +102,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         view::InitScreen();
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        gluPerspective(90.0, view::aspect, 0.01, 3200.0);
+        gluPerspective(90.0, view::aspect, 0.01, 50.0);
         GetClientRect(hwnd, &WIN_RECT);
         glViewport(0, 0, WIN_RECT.right, WIN_RECT.bottom);
         break;
@@ -131,9 +131,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 
 
-glm::dvec3 destroyer1Pos = glm::dvec3(100.0, -50.0, 200.0);
-glm::dvec3 destroyer2Pos = glm::dvec3(-160.0, 50.0, 280.0);
-glm::dvec3 destroyer3Pos = glm::dvec3(0.0, 100.0, 150.0);
+glm::dvec3 destroyer1Pos = glm::dvec3(1.0, -0.5, 2.0);
+glm::dvec3 destroyer2Pos = glm::dvec3(-1.6, 0.5, 2.8);
+glm::dvec3 destroyer3Pos = glm::dvec3(0.0, 1.0, 1.5);
 
 void Draw()
 {
